@@ -1,6 +1,7 @@
 from pathlib import Path
 import pandas as pd
 import openpyxl
+from email_notif import Email
 
 class Output:
 
@@ -19,12 +20,15 @@ class Output:
         wb_obj = openpyxl.load_workbook(pub_xlsx)
         sheet = wb_obj.active
         w_row = sheet.max_row + 1
+        rows_changed = ""
 
         # Loop through publications of authors
         for index, row in data.iterrows():
+            rows_changed+=str(w_row) + ", "
             sheet.cell(row=w_row, column=1).value = row['title']
             sheet.cell(row=w_row, column=2).value = row['author']
             sheet.cell(row=w_row, column=3).value = row['pub_url']
             sheet.cell(row=w_row, column=4).value = row['pub_year']
             w_row+=1
         wb_obj.save(filename=path)
+        notify = Email().send_email_notif(rows_changed)
