@@ -5,3 +5,4 @@
 - [ ] Create argument parsers
 - [ ] Create logger
 - [ ] Create README
+- [X] Generate email notification
