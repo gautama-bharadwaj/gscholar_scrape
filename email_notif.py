@@ -4,20 +4,18 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from jinja2 import Environment
-import json
+import configparser
 
 class Email:
       
       def __init__(self):
-        with open('config/email_config.json') as f:
-            config = json.load(f)
-        with open('config/password.json') as f:
-            pswd = json.load(f)
-        self.sender_email = config['from']
-        self.receiver_email = config['to']
-        self.password = pswd['pswd']
+        self.config = configparser.ConfigParser()
+        self.config.read("config/config.ini")
+        self.sender_email = self.config.get("EMAILKEYS", "from")
+        self.receiver_email = self.config.get("EMAILKEYS", "to")
+        self.password = self.config.get("EMAILKEYS", "password")
 
-      def send_email_notif(self, msg):
+      def send_email_notif(self, path, initial_row, final_row):
         print("Sending email notification..")
         message = MIMEMultipart("alternative")
         message["Subject"] = "Google scholar scrape alert"
@@ -28,7 +26,7 @@ class Email:
         text = """\
         Hello,
 
-        This is an automated email generated because publications.xlsx has been modified by the Google Scholar Scrape bot. The following lines have been added:
+        This is an automated email generated because {{ path }} has been modified by the Google Scholar Scrape bot. The following lines have been added:
         {{placeholder}}"""
         html = """\
         <!doctype html>
@@ -171,24 +169,24 @@ class Email:
                                 Hello,</p>
                               <p
                                 style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
-                                This is an automated email generated because <b><i>publications.xlsx</i></b> has been modified
+                                This is an automated email generated because <b><i>{{ path }}</i></b> has been modified
                                 by the Google Scholar Scrape bot. The following lines have been added: </p>
                               <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="table-changes"
                                 style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background-color: lightsalmon;"
                                 width="100%" bgcolor="lightsalmon">
                                 <tbody>
                                   <tr>
-                                    <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
+                                    <td align="center" style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
                                       valign="top">
                                       <table role="presentation" border="0" cellpadding="0" cellspacing="0"
                                         style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;"
                                         width="100%">
                                         <tbody>
                                           <tr>
-                                            <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"
-                                              valign="top">
+                                            <td style="font-family: sans-serif; font-size: 14px; vertical-align: middle; text-align:center;"
+                                              valign="middle">
                                               <p
-                                                style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
+                                                style="font-family: sans-serif; font-size: 16px; font-weight: bold; color: red; margin: 10px;">
                                                 {{ placeholder }}</p>
                                             </td>
                                           </tr>
@@ -247,14 +245,16 @@ class Email:
         # Attach the MIMEImage object to the email body.
         message.attach(msgImage)
         # Turn these into plain/html MIMEText objects
+        placeholder_lines = "Lines " + \
+            str(initial_row) + " to " + str(final_row)
         part1 = MIMEText(
             Environment().from_string(html).render(
-                placeholder=msg
+                {'placeholder': placeholder_lines, 'path': path}
             ), "plain"
         )
         part2 = MIMEText(
             Environment().from_string(html).render(
-                placeholder=msg
+                {'placeholder': placeholder_lines, 'path': path}
             ), "html"
         )
 
