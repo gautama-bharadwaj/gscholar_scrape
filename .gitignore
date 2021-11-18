@@ -1,5 +1,7 @@
 .~lock.people_gscholar.xls#
 __pycache__/
-config/password.json
+config/config.ini
 input/.~lock.people_gscholar.xls#
 output/.~lock.publications.xlsx#
+input/people_gscholar.xls
+output/publications.xlsx
