@@ -27,10 +27,6 @@ class Scraper:
             print('Scraping data for ' + user_ids[id])
             search_query = scholarly.search_author_id(id)
             author = scholarly.fill(search_query, sections=['publications'])
-            i = 0
             for pub in author['publications']:
                 df = df.append(scholarly.fill(pub), ignore_index=True)
-                if(i == 1):
-                    break
-                i += 1
         return df

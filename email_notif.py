@@ -245,8 +245,11 @@ class Email:
         # Attach the MIMEImage object to the email body.
         message.attach(msgImage)
         # Turn these into plain/html MIMEText objects
-        placeholder_lines = "Lines " + \
-            str(initial_row) + " to " + str(final_row)
+        if (initial_row == final_row):
+          placeholder_lines = "Line " + str(initial_row)
+        else:
+          placeholder_lines = "Lines " + \
+              str(initial_row) + " to " + str(final_row)
         part1 = MIMEText(
             Environment().from_string(html).render(
                 {'placeholder': placeholder_lines, 'path': path}

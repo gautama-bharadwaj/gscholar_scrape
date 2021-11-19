@@ -2,12 +2,15 @@ from pathlib import Path
 import pandas as pd
 import openpyxl
 from email_notif import Email
+from openpyxl.styles import Alignment
+
 
 class Output:
 
-    def clean_data(self, scrape_data): 
+    def clean_data(self, scrape_data):
         print('Cleaning data..')
-        scrape_data.drop(['author_pub_id', 'source', 'url_related_articles', 'citedby_url', 'cites_id', 'cites_per_year', 'container_type', 'num_citations', 'filled'], axis=1, inplace=True)
+        scrape_data.drop(['author_pub_id', 'source', 'url_related_articles', 'citedby_url', 'cites_id',
+                          'cites_per_year', 'container_type', 'num_citations', 'filled'], axis=1, inplace=True)
         cleaned_data = pd.DataFrame()
         for bib in scrape_data['bib']:
             cleaned_data = cleaned_data.append(bib, ignore_index=True)
@@ -19,17 +22,40 @@ class Output:
         pub_xlsx = Path(path)
         wb_obj = openpyxl.load_workbook(pub_xlsx)
         sheet = wb_obj.active
-        w_row = sheet.max_row + 1
+        i = 1
+        existing_titles = []
+        while True:
+            if (sheet.cell(row=i, column=3).value is None and sheet.cell(row=i, column=4).value is None and sheet.cell(row=i, column=6).value is None and sheet.cell(row=i, column=7).value is None):
+                break
+            existing_titles.append(str(sheet.cell(row=i, column=4).value).strip().lower())
+            i += 1
+        w_row = i
         initial_row = w_row
-        rows_changed = ""
-
         # Loop through publications of authors
         for index, row in data.iterrows():
-            sheet.cell(row=w_row, column=1).value = row['title']
-            sheet.cell(row=w_row, column=2).value = row['author']
-            sheet.cell(row=w_row, column=3).value = row['pub_url']
-            sheet.cell(row=w_row, column=4).value = row['pub_year']
+            if (str(row['title'].strip().lower()) in existing_titles):
+                print(row['title'] + " exists. Skipping excel entry")
+                continue
+            sheet.cell(row=w_row, column=3).value = row['author'].replace(
+                " and", ";")
+            sheet.cell(row=w_row, column=4).value = row['title']
+            sheet.cell(row=w_row, column=5).value = row['journal']
+            sheet.cell(row=w_row, column=6).hyperlink = row['pub_url']
+            sheet.cell(row=w_row, column=7).value = str(int(row['pub_year']))
+
+            # Formatting
+            sheet.cell(row=w_row, column=3).alignment = Alignment(
+                wrap_text=True)
+            sheet.cell(row=w_row, column=4).alignment = Alignment(
+                wrap_text=True)
+            sheet.cell(row=w_row, column=6).alignment = Alignment(
+                wrap_text=True)
+            sheet.cell(row=w_row, column=7).alignment = Alignment(
+                horizontal='right')
+            row_dim = sheet.row_dimensions[w_row]
+            row_dim.height = 50
             w_row += 1
         final_row = w_row
         wb_obj.save(filename=path)
+        wb_obj.close()
         notify = Email().send_email_notif(path, initial_row, final_row)
