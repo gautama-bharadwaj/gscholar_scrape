@@ -30,7 +30,7 @@ By default, this already exists. If the name of the Excel sheet is changed, it w
 
 Create a file called ```config.ini``` in the ```config``` folder and enter the following details:
 
-```
+```ini
 [EMAILKEYS]
 password=password_to_the_bot_account
 to=email_to_which_the_updates_should_go
