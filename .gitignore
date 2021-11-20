@@ -2,5 +2,5 @@
 __pycache__/
 config/config.ini
 input/.~lock.people_gscholar.xls#
-output/.~lock.publications.xlsx#
 output/UC Davis Bicycle Research.xlsx
+geckodriver.log
