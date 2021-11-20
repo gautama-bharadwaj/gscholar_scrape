@@ -246,7 +246,7 @@ class Email:
         message.attach(msgImage)
         # Turn these into plain/html MIMEText objects
         if (initial_row == final_row):
-          placeholder_lines = "Line " + str(initial_row)
+          placeholder_lines = "The program ran, but no new additions have been made"
         else:
           placeholder_lines = "Lines " + \
               str(initial_row) + " to " + str(final_row)
