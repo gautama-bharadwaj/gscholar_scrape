@@ -1,5 +1,6 @@
 from pathlib import Path
 import pandas as pd
+import math
 import openpyxl
 from email_notif import Email
 from openpyxl.styles import Alignment
@@ -41,8 +42,8 @@ class Output:
             sheet.cell(row=w_row, column=4).value = row['title']
             sheet.cell(row=w_row, column=5).value = row['journal']
             sheet.cell(row=w_row, column=6).hyperlink = row['pub_url']
-            sheet.cell(row=w_row, column=7).value = str(int(row['pub_year']))
-
+            if (not math.isnan(row['pub_year'])):
+                sheet.cell(row=w_row, column=7).value = str(int(row['pub_year']))
             # Formatting
             sheet.cell(row=w_row, column=3).alignment = Alignment(
                 wrap_text=True)
