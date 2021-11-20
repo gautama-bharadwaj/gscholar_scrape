@@ -1,12 +1,15 @@
 from functions.scraper import Scraper
 from functions.output import Output
 from datetime import datetime
+import json
 
 def run_module():
+    with open('config/output_file.json') as f:
+        file_path = json.load(f)
     scrape_data = Scraper('input/people_gscholar.xls').scrape()
     op = Output()
     clean_data = op.clean_data(scrape_data)
-    op.xlsoutput(clean_data, 'output/UC Davis Bicycle Research.xlsx')
+    op.xlsoutput(clean_data, file_path['path'])
 
 
 if __name__ == "__main__":
