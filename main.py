@@ -1,5 +1,5 @@
-from scraper import Scraper
-from output import Output
+from functions.scraper import Scraper
+from functions.output import Output
 from datetime import datetime
 
 def run_module():

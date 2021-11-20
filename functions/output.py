@@ -2,7 +2,7 @@ from pathlib import Path
 import pandas as pd
 import math
 import openpyxl
-from email_notif import Email
+from functions.email_notif import Email
 from openpyxl.styles import Alignment
 
 

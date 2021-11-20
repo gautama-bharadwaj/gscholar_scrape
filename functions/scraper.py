@@ -2,7 +2,7 @@ from scholarly import scholarly, ProxyGenerator
 from pathlib import Path
 import pandas as pd
 import math
-from validate import Validate
+from functions.validate import Validate
 from datetime import date
 
 class Scraper:
@@ -33,7 +33,6 @@ class Scraper:
                 filled_pub = scholarly.fill(pub)
                 if (not math.isnan(filled_pub['bib']['pub_year'])):
                     if (int(filled_pub['bib']['pub_year']) == year):
-                        print("publication scraped..")
                         df = df.append(filled_pub, ignore_index=True)
                     elif (int(filled_pub['bib']['pub_year']) > year):
                         continue
