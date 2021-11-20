@@ -35,13 +35,12 @@ class Output:
         # Loop through publications of authors
         for index, row in data.iterrows():
             if (str(row['title'].strip().lower()) in existing_titles):
-                print(row['title'] + " exists. Skipping excel entry")
                 continue
             sheet.cell(row=w_row, column=3).value = row['author'].replace(
                 " and", ";")
             sheet.cell(row=w_row, column=4).value = row['title']
             sheet.cell(row=w_row, column=5).value = row['journal']
-            sheet.cell(row=w_row, column=6).hyperlink = row['pub_url']
+            sheet.cell(row=w_row, column=6).hyperlink = str(row['pub_url'])
             if (not math.isnan(row['pub_year'])):
                 sheet.cell(row=w_row, column=7).value = str(int(row['pub_year']))
             # Formatting
