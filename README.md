@@ -1,6 +1,6 @@
 # gscholar_scrape
 
-gscholar_scrape is a Python module that scrapes Google Scholar for publications queried by author ids, and stores the result in an .xlsx file.
+Gscholar_scrape is a Python module that scrapes Google Scholar for publications queried by author ids, and stores the result in an .xlsx file.
 
 ## Installation
 
