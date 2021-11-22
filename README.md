@@ -28,7 +28,7 @@ By default, this already exists. If the name of the Excel sheet is changed, it w
 
 - ### config.ini
 
-Create a file called ```config.ini``` in the ```config``` folder and enter the following details:
+A file ```config.ini``` exists in the ```config``` folder. The following changes have to be made:
 
 ```ini
 [EMAILKEYS]
