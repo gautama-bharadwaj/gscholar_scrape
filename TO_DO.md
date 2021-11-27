@@ -4,5 +4,5 @@
 - [X] Skip writing already existing publications
 - [ ] Create argument parsers
 - [ ] Create logger
-- [ ] Create README
+- [X] Create README
 - [X] Generate email notification
