@@ -28,7 +28,10 @@ class Output:
         while True:
             if (sheet.cell(row=i, column=3).value is None and sheet.cell(row=i, column=4).value is None and sheet.cell(row=i, column=6).value is None and sheet.cell(row=i, column=7).value is None):
                 break
-            existing_titles.append(str(sheet.cell(row=i, column=4).value).strip().lower())
+            if sheet.cell(row=i, column=13).value is not None:
+                existing_titles.append(str(sheet.cell(row=i, column=13).value).strip().lower())
+            else:
+                existing_titles.append(str(sheet.cell(row=i, column=4).value).strip().lower())
             i += 1
         w_row = i
         initial_row = w_row
@@ -39,6 +42,8 @@ class Output:
             sheet.cell(row=w_row, column=3).value = row['author'].replace(
                 " and", ";")
             sheet.cell(row=w_row, column=4).value = row['title']
+            sheet.cell(row=w_row, column=13).value = row['title']
+            sheet.cell(row=w_row, column=12).value = row['abstract']
             sheet.cell(row=w_row, column=5).value = row['journal']
             sheet.cell(row=w_row, column=6).hyperlink = str(row['pub_url'])
             if (not math.isnan(row['pub_year'])):
