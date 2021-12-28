@@ -271,5 +271,5 @@ class Email:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
             server.login(self.sender_email, self.password)
             server.sendmail(
-                self.sender_email, self.receiver_email, message.as_string()
+                self.sender_email, self.receiver_email.split(","), message.as_string()
             )
