@@ -47,6 +47,12 @@ In order to run the module, run
 python3 main.py
 ```
 
+This scrapes all the publications publised in the current year. In order to get publications from other years, the module can be run with arguments as shown below:
+
+```bash
+python3 main.py -y=year
+```
+
 ## Working
 
 The entire module takes input from ```people_gscholar.xls``` file present in the ```input``` folder. This file contains the list of people and their associated user ids on Google Scholar. An example of ```people_gscholar.xls``` is shown below: 
