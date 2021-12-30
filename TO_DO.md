@@ -3,7 +3,7 @@
 - [X] filter publications by year & month
 - [X] Skip writing already existing publications
 - [X] Create argument parsers
-- [X] Ad more emails
+- [X] Add more emails
 - [ ] Create logger
 - [X] Create README
 - [X] Generate email notification
