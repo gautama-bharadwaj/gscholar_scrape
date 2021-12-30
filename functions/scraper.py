@@ -3,7 +3,6 @@ from pathlib import Path
 import pandas as pd
 import math
 from functions.validate import Validate
-from datetime import date
 
 class Scraper:
     def __init__(self, path):
@@ -21,8 +20,7 @@ class Scraper:
                     user_ids.append(row['user_id'])
             return user_ids_dict
 
-    def scrape(self):
-        year = date.today().year
+    def scrape(self, year):
         user_ids = self.read_user_id()
         df = pd.DataFrame()
         for id in user_ids.keys():
